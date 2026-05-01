@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+@theme {
+  --color-gold-400: #facc15;
+  --color-gold-500: #eab308;
+  --color-gold-600: #ca8a04;
+}
+
+@layer base {
+  body {
+    @apply bg-zinc-950 text-zinc-50 min-h-screen font-sans antialiased;
+  }
+}

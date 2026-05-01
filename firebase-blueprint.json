@@ -1,0 +1,72 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile with wallet balance",
+      "type": "object",
+      "properties": {
+        "balance": { "type": "number" },
+        "role": { "type": "string", "enum": ["user", "admin"] },
+        "createdAt": { "type": "string", "format": "timestamp" },
+        "email": { "type": "string" }
+      },
+      "required": ["balance", "role", "createdAt", "email"]
+    },
+    "GameState": {
+      "title": "GameState",
+      "description": "Singleton tracking the current round",
+      "type": "object",
+      "properties": {
+        "status": { "type": "string", "enum": ["betting", "spinning", "result"] },
+        "roundId": { "type": "string" },
+        "roundEndTime": { "type": "number" },
+        "resultNumber": { "type": "number" },
+        "updatedAt": { "type": "string", "format": "timestamp" }
+      },
+      "required": ["status", "roundId", "roundEndTime", "updatedAt"]
+    },
+    "Bet": {
+      "title": "Bet",
+      "description": "A user's bet on a round",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "roundId": { "type": "string" },
+        "amount": { "type": "number" },
+        "number": { "type": "number" },
+        "status": { "type": "string", "enum": ["pending", "won", "lost"] },
+        "payout": { "type": "number" },
+        "createdAt": { "type": "string", "format": "timestamp" }
+      },
+      "required": ["userId", "roundId", "amount", "number", "status", "payout", "createdAt"]
+    },
+    "RoundHistory": {
+      "title": "RoundHistory",
+      "description": "Past result of a round",
+      "type": "object",
+      "properties": {
+        "resultNumber": { "type": "number" },
+        "timestamp": { "type": "string", "format": "timestamp" }
+      },
+      "required": ["resultNumber", "timestamp"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "User profiles"
+    },
+    "/game/state": {
+      "schema": { "$ref": "#/entities/GameState" },
+      "description": "Current game state Singleton"
+    },
+    "/bets/{betId}": {
+      "schema": { "$ref": "#/entities/Bet" },
+      "description": "User bets"
+    },
+    "/history/{roundId}": {
+      "schema": { "$ref": "#/entities/RoundHistory" },
+      "description": "Round history"
+    }
+  }
+}
